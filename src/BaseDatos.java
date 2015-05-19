@@ -17,7 +17,7 @@ public class BaseDatos {
 	Statement st = null;
 	ResultSet rs = null;
 
-	public void iniciar() {
+	private void iniciar() {
 		try {
 			con = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/bdchat", "root", "mysql");
@@ -27,7 +27,7 @@ public class BaseDatos {
 		}
 	}
 
-	public void cerrar() throws SQLException {
+	private void cerrar() throws SQLException {
 		con.close();
 		st.close();
 	}
@@ -36,15 +36,17 @@ public class BaseDatos {
 
 		try {
 			iniciar();
+			
 			st = con.createStatement();
+			System.out.println(rs = st.executeQuery("select * from usuario"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			cerrar();
 		}
-
-		rs = st.executeQuery("select ");
+		
+		
 	}
 
 }
