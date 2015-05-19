@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class BaseDatos {
 
@@ -16,6 +17,7 @@ public class BaseDatos {
 	Connection con = null;
 	Statement st = null;
 	ResultSet rs = null;
+	ArrayList lista = new ArrayList();
 
 	private void iniciar() {
 		try {
@@ -36,17 +38,27 @@ public class BaseDatos {
 
 		try {
 			iniciar();
-			
+
+			String consulta = "select * from usuario order by id_usuario";
+
 			st = con.createStatement();
-			System.out.println(rs = st.executeQuery("select * from usuario"));
+			rs = st.executeQuery(consulta);
+			while (rs.next()) {
+				int id_usuario = rs.getInt(1);
+				String nombre = rs.getString(2);
+				String apellidos = rs.getString(3);
+				int sala = rs.getInt(4);
+				System.out.println(id_usuario + " " + nombre + " " + apellidos
+						+ " " + sala);
+			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			cerrar();
 		}
-		
-		
+
 	}
 
 }
