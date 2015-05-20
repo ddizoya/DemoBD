@@ -1,6 +1,8 @@
 import java.sql.*;
 import java.util.ArrayList;
 
+import javax.swing.table.DefaultTableModel;
+
 public class BaseDatos {
 
 	public BaseDatos() {
@@ -17,7 +19,6 @@ public class BaseDatos {
 	Connection con = null;
 	Statement st = null;
 	ResultSet rs = null;
-	ArrayList lista = new ArrayList();
 
 	private void iniciar() {
 		try {
@@ -34,8 +35,25 @@ public class BaseDatos {
 		st.close();
 	}
 
-	public void anadirAlumno() throws SQLException {
+	public void registrarUsuario(String consulta) throws SQLException {
 
+		try {
+			iniciar();
+
+			st = con.createStatement();
+			st.executeUpdate(consulta);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			cerrar();
+		}
+
+	}
+
+	public DefaultTableModel verUsuarios(DefaultTableModel tb)
+			throws SQLException {
 		try {
 			iniciar();
 
@@ -43,13 +61,15 @@ public class BaseDatos {
 
 			st = con.createStatement();
 			rs = st.executeQuery(consulta);
+
 			while (rs.next()) {
 				int id_usuario = rs.getInt(1);
 				String nombre = rs.getString(2);
 				String apellidos = rs.getString(3);
 				int sala = rs.getInt(4);
-				System.out.println(id_usuario + " " + nombre + " " + apellidos
-						+ " " + sala);
+				String aux[] = { String.valueOf(id_usuario), nombre, apellidos,
+						String.valueOf(sala) };
+				tb.addRow(aux);
 			}
 
 		} catch (SQLException e) {
@@ -58,6 +78,7 @@ public class BaseDatos {
 		} finally {
 			cerrar();
 		}
+		return tb;
 
 	}
 
